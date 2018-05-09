@@ -1,0 +1,29 @@
+﻿body {
+    padding: 20px;
+}
+
+#buyers {
+    width: 50%;
+    text-align: center;
+}
+
+#buyers td, #buyers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#buyers tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#buyers tr:hover {
+    background-color: #ddd;
+}
+
+#buyers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+}
