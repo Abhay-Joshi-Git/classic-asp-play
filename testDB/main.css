@@ -1,4 +1,10 @@
-﻿body {
+﻿.header {
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 10px 4px lightgrey;
+}
+
+.container {
     padding: 20px;
 }
 

@@ -7,9 +7,11 @@ Dim connString
 Dim rs
 Dim i
 
-%>
+%><!-- #INCLUDE VIRTUAL = "Header.asp" -->
 <link type="text/css" href="main.css" rel="stylesheet" />
-<h1>Buyers Info : </h1>
+<div class="container">
+
+<h3>Buyers Info : </h3>
 
 
 <%
@@ -68,3 +70,4 @@ do until rs.EOF
 loop
     
 %>
+</div>
