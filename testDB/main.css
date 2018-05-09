@@ -4,13 +4,14 @@
     box-shadow: 0 0 10px 4px lightgrey;
 }
 
-.container {
+.container-half {
     padding: 20px;
+    width: 50%;
 }
 
 #buyers {
-    width: 50%;
     text-align: center;
+    width: 100%;
 }
 
 #buyers td, #buyers th {

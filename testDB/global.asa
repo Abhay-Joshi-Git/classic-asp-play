@@ -1,0 +1,7 @@
+<script language="vbscript" runat="server">
+
+Sub Application_OnStart
+    Application("connectionString") = "Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Password=admin@123;Initial Catalog=test;Data Source=ultp_758\sqlexpress;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096"
+End Sub
+
+</script>

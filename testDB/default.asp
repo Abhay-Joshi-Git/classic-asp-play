@@ -8,8 +8,10 @@ Dim rs
 Dim i
 
 %><!-- #INCLUDE VIRTUAL = "Header.asp" -->
+<link type="text/css" rel="stylesheet" href="bootstrap.min.css" />
 <link type="text/css" href="main.css" rel="stylesheet" />
-<div class="container">
+
+<div class="container-half container">
 
 <h3>Buyers Info : </h3>
 
@@ -18,9 +20,8 @@ Dim i
 
 on error resume next
     
-connString = "Provider=SQLOLEDB.1;Persist Security Info=False;User ID=sa;Password=admin@123;Initial Catalog=test;Data Source=ultp_758\sqlexpress;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096"
 Set cnnTest = Server.CreateObject("ADODB.Connection")
-cnnTest.ConnectionString = connString
+cnnTest.ConnectionString = Application("connectionString")
 cnnTest.Open
 
 set rs = Server.CreateObject("ADODB.recordset")
@@ -28,10 +29,10 @@ rs.Open "select * from dbo.Buyer", cnnTest
 
     If rs.EOF Then
         response.Write("no records found")
-    End If
+    Else
+
 
     response.Write("<br />")
-
 
 %>
   
@@ -57,17 +58,34 @@ rs.Open "select * from dbo.Buyer", cnnTest
     </table>
 </div>
 
+<div style="text-align: right; padding-top: 20px">
+    <button onClick="addBuyer()" >Add Buyer</button>
+</div>
+
 <%
-do until rs.EOF
-    For i = 0 To (rs.Fields.Count-1)
-        response.Write(rs.Fields.Item(i).Name)    
-        response.write(" = ")
-        response.write(rs.Fields.Item(i).Value)
+    do until rs.EOF
+        For i = 0 To (rs.Fields.Count-1)
+            response.Write(rs.Fields.Item(i).Name)    
+            response.write(" = ")
+            response.write(rs.Fields.Item(i).Value)
+            response.Write("<br />")
+        Next
         response.Write("<br />")
-    Next
-    response.Write("<br />")
-    rs.MoveNext
-loop
-    
+        rs.MoveNext
+    loop
+
+End If
+
+   
+
+set rs = Nothing
+Set cnnTest = Nothing
 %>
 </div>
+
+<script type="text/javascript">
+    function addBuyer() {
+        console.log('add buyer clicked');
+        document.location = 'addBuyer.asp'
+    }
+</script>
