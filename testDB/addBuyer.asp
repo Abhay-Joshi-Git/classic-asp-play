@@ -70,7 +70,7 @@ Set cnnTest = Nothing
 <div class="container-half container">
     <% If submitted = True And Status  = 0 Then%>
     <div class="card bg-success text-white" style="box-shadow: 0 0 10px -5px lightgrey; padding: 5px;">
-        <h2>Buyer <% request.Form("Name") %> has been added sucessfully.</h2>
+        <h2>Buyer <% response.Write(Request.Form("name")) %> has been added sucessfully.</h2>
     </div>
     <br />
     <h3>Add Another Buyer :</h3>
@@ -84,10 +84,16 @@ Set cnnTest = Nothing
             <input name="name" class="form-control"  id="name" type="text" placeholder="Name" required />
         </div>
         <div class="form-group">
-            <label for="address">address :</label>
+            <label for="address">Address :</label>
             <input name="address" class="form-control"  id="address" placeholder="Address"/>
         </div>
         <br />
-        <input class="btn btn-primary" type="submit" value="Submit"/>
+        <div class="container">
+            <div class="row justify-content-between">
+                <button onclick="location = '/'" class="btn btn-secondary">Back</button>
+                <input class="btn btn-primary" type="submit" value="Submit"/>
+            </div>
+        </div>
+        
     </form> 
 </div>

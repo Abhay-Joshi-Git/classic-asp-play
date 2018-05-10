@@ -27,8 +27,14 @@ cnnTest.Open
 set rs = Server.CreateObject("ADODB.recordset")
 rs.Open "select * from dbo.Buyer", cnnTest
 
-    If rs.EOF Then
-        response.Write("no records found")
+    If rs.EOF Then %>
+
+    <div class="card p-3 text-warning bg-dark bg-gradient-light">
+        <h3>There are no buyers</h3>
+    </div>
+        
+    
+<%
     Else
 
 
@@ -58,10 +64,6 @@ rs.Open "select * from dbo.Buyer", cnnTest
     </table>
 </div>
 
-<div style="text-align: right; padding-top: 20px">
-    <button onClick="addBuyer()" >Add Buyer</button>
-</div>
-
 <%
     do until rs.EOF
         For i = 0 To (rs.Fields.Count-1)
@@ -81,6 +83,10 @@ End If
 set rs = Nothing
 Set cnnTest = Nothing
 %>
+
+    <div style="text-align: right; padding-top: 20px">
+        <button onClick="addBuyer()" class="btn btn-primary">Add Buyer</button>
+    </div>
 </div>
 
 <script type="text/javascript">
