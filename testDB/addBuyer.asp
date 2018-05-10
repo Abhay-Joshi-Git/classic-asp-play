@@ -13,33 +13,54 @@ Dim Status
 Dim sql
 
 
-    submitted = False
+Status = -1
+submitted = False
+
+' Note - we need to include adovbs.inc so that we can access constants like adCmdStoredProc, adParamReturnValue
 %>
 <!-- #INCLUDE VIRTUAL = "Header.asp" -->
+<!-- #INCLUDE VIRTUAL = "adovbs.inc" -->
 <link type="text/css" rel="stylesheet" href="bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="main.css" />
 
 <%
 
-on error resume next
+ on error resume next
 Set cnnTest = Server.CreateObject("ADODB.Connection")
 cnnTest.ConnectionString = Application("connectionString")
 cnnTest.Open
-
-
-response.Write("form count" & Request.Form.Count & "  " & Request.Form)
-response.Write("<br />")
+    
 Randomize
-id = (Month(Now()) & "" & Day(Now()) & Hour(Now()) & Minute(Now()) & Second(Now()) &"" &  CInt(Rnd * 10)) + 2
-response.Write(id)
-response.Write(Request.Form("name"))
+id = CStr(Year(Now()) + Month(Now()) + Day(Now())  + Hour(Now()) + Minute(Now()) + Second(Now())) & CStr(CInt(Rnd * 10))
+id = CInt(id)
 
-' replace this with stored proc
-sql = "INSERT INTO dbo.Buyer VALUES ( " & id &", ' " & Request.Form("name") & "', ' " & Request.Form("address") & "')"
 
-If Request.Form("name") Then
-    response.Write("sql  - "  & sql)
-    cnnTest.Execute(sql)
+If Request.Form("name") <> "" Then
+    submitted = true
+    Set addUserCmd = Server.CreateObject("ADODB.Command")
+    With addUserCmd
+	    .ActiveConnection = cnnTest
+	    .CommandType = adCmdStoredProc
+	    .Prepared = True
+	    .CommandText = "add_buyer"
+
+	    .Parameters.Append .CreateParameter ("RC", adInteger, adParamReturnValue, 4) 
+        .Parameters.Append .CreateParameter("id", adInteger, adParamInput, 4, id)
+		.Parameters.Append .CreateParameter("name", adVarchar, adParamInput, 50, Request.Form("name"))
+        .Parameters.Append .CreateParameter("address", adVarchar, adParamInput, 50, Request.Form("address"))
+
+        .Execute
+
+        If err.number <> 0 Then
+            response.Write("Error - " & err.Description)
+        End If
+
+         Status = .Parameters("RC")
+    End With
+
+    response.Write("<br />")
+
+    Set addUserCmd = Nothing
 End If
     
 Set cnnTest = Nothing
@@ -47,10 +68,14 @@ Set cnnTest = Nothing
 %>
 
 <div class="container-half container">
-    <% If submitted  Then%>
-    <h3>Add Buyer :</h3>
-    <% Else %>
+    <% If submitted = True And Status  = 0 Then%>
+    <div class="card bg-success text-white" style="box-shadow: 0 0 10px -5px lightgrey; padding: 5px;">
+        <h2>Buyer <% request.Form("Name") %> has been added sucessfully.</h2>
+    </div>
+    <br />
     <h3>Add Another Buyer :</h3>
+    <% Else %>
+    <h3>Add Buyer :</h3>
     <% End If %>
     <br />
     <form method="POST" action="addBuyer.asp">
